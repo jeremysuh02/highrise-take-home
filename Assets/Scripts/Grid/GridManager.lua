@@ -8,16 +8,34 @@ local ItemResponse = Event.new("ItemResponse")
 --!SerializeField
 local Grids: {GridBehavior} = {}
 
+--!SerializeField
+local TreasureChest: GameObject = nil
+
+--!SerializeField
+local Trash: GameObject = nil
+
+--!SerializeField
+local Items: {GameObject} = {}
+
+local GridItems = {}
+
 local PossibleItems = {"Treasure", "Coins", "Trash", "Nothing"}
 
 function self:ClientAwake()
-    ItemResponse:Connect(function(player, item)
-        print("Client received item: " .. tostring(item))
+    print("ClientAwake called for GridManager")
+    ItemRequest:FireServer()
+    ItemResponse:Connect(function(items)
+        print("Client received grid items:")
+        for i, itemType in ipairs(items) do
+            print("Grid " .. i .. ": " .. itemType)
+        end
     end)
 end
 
 
 function self:ServerAwake()
+    --local TreasureObject = Object.Instantiate(TreasureChest)
+    --local TrashObject = Object.Instantiate(Trash)
     -- find all grid behaviors in the scene
     local grids = self.gameObject:GetComponentsInChildren(GridBehavior)
     -- add to Grids array
@@ -26,7 +44,11 @@ function self:ServerAwake()
     end
     print("GridManager initialized with " .. #Grids .. " grids.")
     InitializeGrids()
-    
+    print("Firing Grid Items to all clients")
+    ItemResponse:FireAllClients(GridItems)
+    ItemRequest:Connect(function(player)
+        ItemResponse:FireClient(player, GridItems)
+    end)
     
 end
 
@@ -36,15 +58,26 @@ end
 
 function InitializeGrids()
 -- Initialize each grid with a random item
-    for _, grid in ipairs(Grids) do
-        local randomItem = PossibleItems[math.random(1, #PossibleItems)]
-        grid.SetCurrentItem(randomItem)
-        local _gridItem = grid.GetCurrentItem()
-        print("Grid initialized with item: " .. _gridItem)
-        ItemRequest:Connect(function(player)
-        -- Send only one item per request, or modify as needed
-            ItemResponse:FireClient(player, _gridItem)
-        end)
+    for i, grid in ipairs(Grids) do
+        local randomInt = math.random(1, #Items)
+        local getItem = Object.Instantiate(Items[randomInt])
+        grid:SetObjectReference(getItem)
+        local itemBehavior = getItem:GetComponent(ItemBehavior)
+        grid:SetCurrentItem(itemBehavior)
+        print(tostring(grid.GetCurrentItem()))
+        local itemType = itemBehavior.GetItemType()
+        print("Grid " .. tostring(i) .. " initialized with item: " .. itemType)
+        table.insert(GridItems, itemType)
+
+    end
+end
+
+function RemoveItemFromGrid(grid: GridBehavior, item: ItemBehavior)
+    -- Remove the item from the specified grid
+    if grid and item then
+        print("Removed item from grid: " .. tostring(item.GetItemType()))
+    else
+        print("Invalid grid or item provided for removal.")
     end
 end
 

@@ -28,6 +28,9 @@ namespace Highrise.Lua.Generated
 
         [LuaScriptPropertyAttribute("60077687dd2352042827328a5da8a2ca")]
         [SerializeField] public System.Collections.Generic.List<UnityEngine.Object> m_Grids = default;
+        [SerializeField] public UnityEngine.GameObject m_TreasureChest = default;
+        [SerializeField] public UnityEngine.GameObject m_Trash = default;
+        [SerializeField] public System.Collections.Generic.List<UnityEngine.GameObject> m_Items = default;
 
         protected override SerializedPropertyValue[] SerializeProperties()
         {
@@ -37,6 +40,9 @@ namespace Highrise.Lua.Generated
             return new SerializedPropertyValue[]
             {
                 CreateSerializedProperty(_script.GetPropertyAt(0), m_Grids),
+                CreateSerializedProperty(_script.GetPropertyAt(1), m_TreasureChest),
+                CreateSerializedProperty(_script.GetPropertyAt(2), m_Trash),
+                CreateSerializedProperty(_script.GetPropertyAt(3), m_Items),
             };
         }
         
