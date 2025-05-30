@@ -19,15 +19,13 @@ using UnityEditor;
 
 namespace Highrise.Lua.Generated
 {
-    [AddComponentMenu("Lua/GridManager")]
-    [LuaRegisterType(0xfde923a3b6094740, typeof(LuaBehaviour))]
-    public class GridManager : LuaBehaviourThunk
+    [AddComponentMenu("Lua/GridBehavior")]
+    [LuaRegisterType(0xf23aa5c144ad7f5b, typeof(LuaBehaviour))]
+    public class GridBehavior : LuaBehaviourThunk
     {
-        private const string s_scriptGUID = "793a1659011eca74cbb7b96ae8ddf7fb";
+        private const string s_scriptGUID = "60077687dd2352042827328a5da8a2ca";
         public override string ScriptGUID => s_scriptGUID;
 
-        [LuaScriptPropertyAttribute("60077687dd2352042827328a5da8a2ca")]
-        [SerializeField] public System.Collections.Generic.List<UnityEngine.Object> m_Grids = default;
 
         protected override SerializedPropertyValue[] SerializeProperties()
         {
@@ -36,12 +34,11 @@ namespace Highrise.Lua.Generated
 
             return new SerializedPropertyValue[]
             {
-                CreateSerializedProperty(_script.GetPropertyAt(0), m_Grids),
             };
         }
         
 #if HR_STUDIO
-        [MenuItem("CONTEXT/GridManager/Edit Script")]
+        [MenuItem("CONTEXT/GridBehavior/Edit Script")]
         private static void EditScript()
         {
             VisualStudioCodeOpener.OpenPath(AssetDatabase.GUIDToAssetPath(s_scriptGUID));
