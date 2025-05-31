@@ -9,7 +9,7 @@ local ObjectReference: GameObject = nil
 
 function self:ClientAwake()
     self.gameObject:GetComponent(TapHandler).Tapped:Connect(function() 
-        GridRequest:FireServer(GetCurrentItem())
+        GridRequest:FireServer()
     end)
 
     GridResponse:Connect(function(item: string)
@@ -18,12 +18,15 @@ function self:ClientAwake()
 end
 
 function self:ServerAwake()
-    GridRequest:Connect(function(player, item)
-        print("Grid tapped by " .. player.name .. " Item Type:" .. typeof(item))
-        if typeof(item) == "ItemBehavior" then
-            print(self.gameObject.name .." tapped by " .. player.name .. ". Current item: " .. item.GetItemType())
-            GridResponse:FireClient(player, item.GetItemType())
+    GridRequest:Connect(function(player)
+        if GridItem then
+            print(self.gameObject.name .. " tapped by " .. player.name .. " Item Type:" .. GridItem.GetItemType())
+            GridResponse:FireClient(player, GridItem.GetItemType())
+        else
+            print(self.gameObject.name .. " tapped by " .. player.name .. " but GridItem is nil")
         end
+        
+            
     end)
     -- local item = GridManager:GetCurrentItem()
     -- print("Grid with item '" .. item .. "' tapped.")
@@ -35,6 +38,7 @@ function DisplayTappedItem(item: string)
 end
 
 function SetCurrentItem(item: ItemBehavior)
+    print("SetCurrentItem called on grid: " .. self.gameObject.name .. " and of type: " .. typeof(item))
     GridItem = item
 end
 

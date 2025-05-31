@@ -26,16 +26,15 @@ function self:ClientAwake()
     ItemRequest:FireServer()
     ItemResponse:Connect(function(items)
         print("Client received grid items:")
+        print("Total items: " .. #items)
         for i, itemType in ipairs(items) do
-            print("Grid " .. i .. ": " .. itemType)
+            print("Grid " .. i .. ": " .. tostring(itemType))
         end
     end)
 end
 
 
 function self:ServerAwake()
-    --local TreasureObject = Object.Instantiate(TreasureChest)
-    --local TrashObject = Object.Instantiate(Trash)
     -- find all grid behaviors in the scene
     local grids = self.gameObject:GetComponentsInChildren(GridBehavior)
     -- add to Grids array
@@ -63,8 +62,9 @@ function InitializeGrids()
         local getItem = Object.Instantiate(Items[randomInt])
         grid:SetObjectReference(getItem)
         local itemBehavior = getItem:GetComponent(ItemBehavior)
-        grid:SetCurrentItem(itemBehavior)
-        print(tostring(grid.GetCurrentItem()))
+        print("itemBehavior type: " .. typeof(itemBehavior))
+        grid.SetCurrentItem(itemBehavior)
+        print("Current item type: " .. typeof(grid.GetCurrentItem()))
         local itemType = itemBehavior.GetItemType()
         print("Grid " .. tostring(i) .. " initialized with item: " .. itemType)
         table.insert(GridItems, itemType)
