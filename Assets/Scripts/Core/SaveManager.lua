@@ -23,6 +23,7 @@ local LoadDataResponseEvent = Event.new("LoadDataResponseEvent")
 local SaveDataRequestEvent = Event.new("SaveDataRequestEvent")
 local SaveDataResponseEvent = Event.new("SaveDataResponseEvent")
 AddWinRequest = Event.new("AddWinRequest")
+CoinTransactionRequest = Event.new("CoinTransactionRequest")
 SaveDataLoadedEvent = Event.new("SaveDataLoadedEvent")
 
 --------------------------------------------------------
@@ -167,8 +168,22 @@ function AddWinServer(player, amount)
     print("Wins: " .. playerInfo.WinCount)
 end
 
+function CoinTransactionServer(player, amount)
+    Storage.IncrementPlayerValue(player, "CoinCount", amount)
+    local playerInfo = ServerGetPlayerData(player.user.id)
+    if playerInfo then
+        playerInfo.CoinCount = (playerInfo.CoinCount or 0) + amount
+    end
+    ServerSavePlayerData(player, playerInfo, nil, true)
+    print("Coins: " .. playerInfo.CoinCount)
+end
+
 function AddWin(amount)
     AddWinRequest:FireServer(amount)
+end
+
+function CoinTransaction(amount)
+    CoinTransactionRequest:FireServer(amount)
 end
 
 -- Initialize server-side events
@@ -180,13 +195,15 @@ function self.ServerAwake()
         if amount > 1 then
             amount = 1
         end
-        local playerInfo = ServerGetPlayerData(player.user.id)
-        local playerWins = playerInfo.WinCount
-        playerWins = playerWins + amount
-
         AddWinServer(player, amount)
     end)
     
+    CoinTransactionRequest:Connect(function(player, amount)
+        if amount > 1 then
+            amount = 1
+        end
+        CoinTransactionServer(player, amount)
+    end)
 end
 
 

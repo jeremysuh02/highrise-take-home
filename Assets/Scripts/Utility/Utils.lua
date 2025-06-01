@@ -10,3 +10,9 @@ function PrintTable(t, indent)
       end
     end
   end
+
+function PrintToggle(set: boolean, statement: string)
+  if set then
+    print(statement)
+  end
+end

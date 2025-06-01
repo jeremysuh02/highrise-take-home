@@ -44,8 +44,11 @@ function DisplayTappedItem(item: string)
     print("Client sees tapped item: " .. item)
     if item == "Treasure" then
         SaveManager.AddWin(1)
+    elseif item == "Coin" then
+        SaveManager.CoinTransaction(1)
     end
 end
+
 
 function SetCurrentItem(item: ItemBehavior)
     print("SetCurrentItem called on grid: " .. self.gameObject.name .. " and of type: " .. typeof(item))
