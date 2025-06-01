@@ -192,14 +192,14 @@ function self.ServerAwake()
     SaveDataRequestEvent:Connect(OnSaveDataRequest)
 
     AddWinRequest:Connect(function(player, amount)
-        if amount > 1 then
+        if amount > 1 then -- ensures players can only receieve 1 win
             amount = 1
         end
         AddWinServer(player, amount)
     end)
     
     CoinTransactionRequest:Connect(function(player, amount)
-        if amount > 1 then
+        if amount > 1 then -- ensures players can only receive 1 coin
             amount = 1
         end
         CoinTransactionServer(player, amount)

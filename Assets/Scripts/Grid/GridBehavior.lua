@@ -4,36 +4,47 @@ local SaveManager: SaveManager = require("SaveManager")
 
 local GridRequest = Event.new("GridRequest")
 local GridResponse = Event.new("GridResponse")
+local DisableTapEvent = Event.new("DisableTapEvent")
 
 local GridItem: ItemBehavior = nil
 local ObjectReference: GameObject = nil
 
+local hasBeenTapped = false -- edge case handler: two player could tap a grid at the same time. Only one rewarded the item.
+
+
 function self:ClientAwake()
-    self.gameObject:GetComponent(TapHandler).Tapped:Connect(function()
+    local tapHandler = self.gameObject:GetComponent(TapHandler)
+    tapHandler.Tapped:Connect(function()
         GridRequest:FireServer()
+        DisableTapEvent:FireServer()
     end)
 
     GridResponse:Connect(function(item: string)
         DisplayTappedItem(item)
     end)
+    
+    DisableTapEvent:Connect(function()
+        if tapHandler then 
+            tapHandler.enabled = false 
+            print("Tap disabled by server")
+        end
+    end)
 end
 
 function self:ServerAwake()
     GridRequest:Connect(function(player)
-        local gridPos =  self.gameObject.transform.position
-        local playerPos = player.character.transform.position
-        local distance = (gridPos - playerPos).magnitude
-        print("distance between player and grid: " .. distance)
-        if distance <= 0.7 then
-            if GridItem then
-                print(self.gameObject.name .. " tapped by " .. player.name .. " Item Type:" .. GridItem.GetItemType())
-                GridResponse:FireClient(player, GridItem.GetItemType())
-            else
-                print(self.gameObject.name .. " tapped by " .. player.name .. " but GridItem is nil")
-            end
+        if hasBeenTapped then 
+            print("Grid already visited.")
+            return
         end
-        
-            
+        if GridItem then
+            hasBeenTapped = true
+            print(self.gameObject.name .. " tapped by " .. player.name .. " Item Type:" .. GridItem.GetItemType())
+            GridResponse:FireClient(player, GridItem.GetItemType())
+            DisableTapEvent:FireAllClients()
+        else
+            print(self.gameObject.name .. " tapped by " .. player.name .. " but GridItem is nil")
+        end
     end)
     -- local item = GridManager:GetCurrentItem()
     -- print("Grid with item '" .. item .. "' tapped.")
@@ -51,7 +62,6 @@ end
 
 
 function SetCurrentItem(item: ItemBehavior)
-    print("SetCurrentItem called on grid: " .. self.gameObject.name .. " and of type: " .. typeof(item))
     GridItem = item
 end
 

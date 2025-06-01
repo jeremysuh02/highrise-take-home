@@ -60,18 +60,27 @@ end
 
 function InitializeGrids()
 -- Initialize each grid with a random item
+    local treasureIdx = math.random(1, #Grids)
     for i, grid in ipairs(Grids) do
-        local randomInt = math.random(1, #Items)
-        local getItem = Object.Instantiate(Items[randomInt])
-        grid:SetObjectReference(getItem)
-        local itemBehavior = getItem:GetComponent(ItemBehavior)
-        grid.SetCurrentItem(itemBehavior)
-        local itemType = itemBehavior.GetItemType()
-        print("Grid " .. tostring(i) .. " initialized with item: " .. itemType)
-        table.insert(GridItems, itemType)
-
+        local randomInt = math.random(2, #Items) -- only one grid can be initialized with treasure
+        if i == treasureIdx then
+            SetGridHelper(1, grid, i)
+        else
+            SetGridHelper(randomInt, grid, i)
+        end
     end
 end
+
+function SetGridHelper(number: number, grid: GridBehavior, index: number)
+    local getItem = Object.Instantiate(Items[number])
+    grid.SetObjectReference(getItem)
+    local itemBehavior = getItem:GetComponent(ItemBehavior)
+    grid.SetCurrentItem(itemBehavior)
+    local itemType = itemBehavior.GetItemType()
+    print("Grid " .. tostring(index) .. " initialized with item: " .. itemType)
+    table.insert(GridItems, itemType)
+end
+
 
 function RemoveItemFromGrid(grid: GridBehavior, item: ItemBehavior)
     -- Remove the item from the specified grid
