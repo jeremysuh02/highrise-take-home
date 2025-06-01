@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 2388929897914198108}
   - component: {fileID: 4136176114550213302}
   - component: {fileID: 2089479615275137000}
-  - component: {fileID: 3491049131126377782}
-  - component: {fileID: 4564632431892417544}
+  - component: {fileID: 1196860702601644727}
+  - component: {fileID: 3676571206190298809}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -101,29 +101,13 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3491049131126377782
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4785081017621053186}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 881728705, guid: 5e99434f214126023bd8db55a8296c39, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _checkDistance: 1
-  _distance: 0.25
-  _moveTo: 1
-  _moveTarget: {fileID: 0}
---- !u!114 &4564632431892417544
+--- !u!114 &1196860702601644727
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -146,3 +130,19 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+--- !u!114 &3676571206190298809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4785081017621053186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 881728705, guid: 5e99434f214126023bd8db55a8296c39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _checkDistance: 1
+  _distance: 0.1
+  _moveTo: 1
+  _moveTarget: {fileID: 0}

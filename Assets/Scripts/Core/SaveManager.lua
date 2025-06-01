@@ -1,5 +1,7 @@
 --!Type(Module)
 
+Utils = require("Utils")
+
 -- PlayerData type hold information about a player
 export type PlayerData = {
     PlayerId: string,
@@ -20,6 +22,7 @@ local LoadDataRequestEvent = Event.new("LoadDataRequestEvent")
 local LoadDataResponseEvent = Event.new("LoadDataResponseEvent")
 local SaveDataRequestEvent = Event.new("SaveDataRequestEvent")
 local SaveDataResponseEvent = Event.new("SaveDataResponseEvent")
+AddWinRequest = Event.new("AddWinRequest")
 SaveDataLoadedEvent = Event.new("SaveDataLoadedEvent")
 
 --------------------------------------------------------
@@ -102,12 +105,91 @@ function SaveDataForPlayer(player: Player, key: string, data: any)
     end)
 end
 
+function LoadGlobalData(key: string, callback: (data: any) -> ())
+	Storage.GetValue(key, function(data)
+		callback(data) -- Call the provided callback with the loaded global data
+	end)
+end
+
+-- Function to save global data
+function SaveGlobalData(key: string, data: any)
+	Storage.SetValue(key, data, function(err: StorageError)
+		if err ~= StorageError.None then
+			error("Failed to save global data: " .. tostring(err)) -- Log error if saving fails
+		end
+	end)
+end
+
+-- Function to update global data with a validator function
+function UpdateGlobalData(key: string, validator: (data: any) -> any?, callback: (data: any) -> any)
+	Storage.UpdateValue(key, function(data)
+		return validator(data) -- Validate and return updated data
+	end, callback) -- Call the provided callback with the updated data
+end
+
+function ServerGetPlayerData(id: string): PlayerData
+	return _serverPlayerSaveList[id] -- Return the player data for the given ID
+end
+
+local function TrackPlayers(game, characterCallback)
+    -- Ensure player data is loaded when they join
+    scene.PlayerJoined:Connect(function(scene, player: Player)
+        LoadDataRequestEvent:Connect(ServerLoadPlayerData)
+
+
+        player.CharacterChanged:Connect(function(player, character)
+            local playerinfo = ServerGetPlayerData(player.user.id)
+            -- Check if the character is instantiated
+            if character == nil then
+                return  -- If no character, exit the function
+            end
+
+            -- Call the provided callback function with player info
+            if characterCallback then
+                characterCallback(playerinfo)
+            end
+        end)
+    end)
+
+    -- Optionally clear the data when they leave
+    game.PlayerDisconnected:Connect(function(player)
+        _serverPlayerSaveList[player.user.id] = nil
+    end)
+end
+
+function AddWinServer(player, amount)
+    Storage.IncrementPlayerValue(player, "WinCount", amount)
+    local playerInfo = ServerGetPlayerData(player.user.id)
+    if playerInfo then
+        playerInfo.WinCount = (playerInfo.WinCount or 0) + amount
+    end
+    ServerSavePlayerData(player, playerInfo, nil, true)
+    print("Wins: " .. playerInfo.WinCount)
+end
+
+function AddWin(amount)
+    AddWinRequest:FireServer(amount)
+end
+
 -- Initialize server-side events
 function self.ServerAwake()
-    LoadDataRequestEvent:Connect(ServerLoadPlayerData)
+    TrackPlayers(server)
     SaveDataRequestEvent:Connect(OnSaveDataRequest)
+
+    AddWinRequest:Connect(function(player, amount)
+        if amount > 1 then
+            amount = 1
+        end
+        local playerInfo = ServerGetPlayerData(player.user.id)
+        local playerWins = playerInfo.WinCount
+        playerWins = playerWins + amount
+
+        AddWinServer(player, amount)
+    end)
     
 end
+
+
 
 --------------------------------------------------------
 -- Client Functions
@@ -135,7 +217,7 @@ function LoadPlayerDataFromServer(OnLoaded: (playerData: PlayerData) -> ())
 end
 
 -- Save player data to server
-function SavePlayserDataToServer()
+function SavePlayerDataToServer()
     local data = {
         playerData = _clientPlayerData,
     }
@@ -156,7 +238,7 @@ end
 -- Clear player data and create new data
 function ClearPlayerData()
     _clientPlayerData = CreateNewPlayerData(client.localPlayer)
-    SavePlayserDataToServer() -- Save the new data to server
+    SavePlayerDataToServer() -- Save the new data to server
 end
 
 -- Initialize client-side events
@@ -166,6 +248,13 @@ function self.ClientAwake()
         SetClientPlayerData(playerData)
         print("Data saved")
     end)
+
+    function OnCharacterInstantiate(playerInfo)
+        local player = playerInfo.player
+        
+    end
+
+   
 end
 
 --------------------------------------------------------

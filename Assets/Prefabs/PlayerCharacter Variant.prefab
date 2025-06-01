@@ -13,6 +13,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerCharacter Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 5362299232143284312, guid: 257a642d7e8bdee4fb0dd92a56ff9b1b,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8345150630327008238, guid: 257a642d7e8bdee4fb0dd92a56ff9b1b,
         type: 3}
       propertyPath: m_LocalPosition.x

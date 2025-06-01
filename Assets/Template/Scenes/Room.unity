@@ -137,6 +137,7 @@ GameObject:
   - component: {fileID: 253354085}
   - component: {fileID: 253354088}
   - component: {fileID: 253354089}
+  - component: {fileID: 253354090}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -204,6 +205,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 911609158}
+  - {fileID: 532008953}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &253354088
@@ -228,8 +230,10 @@ MonoBehaviour:
   m_TreasureChest: {fileID: 1355741929403079342, guid: c357fe31159e58b48bbe724947368d4a,
     type: 3}
   m_Trash: {fileID: 372069961530702719, guid: f6963ccde816b614aa8a021ab141ea63, type: 3}
+  m_Coins: {fileID: 2206118932885688010, guid: 03c97daaff9efbf4797664af55bff96f, type: 3}
   m_Items:
   - {fileID: 1355741929403079342, guid: c357fe31159e58b48bbe724947368d4a, type: 3}
+  - {fileID: 2206118932885688010, guid: 03c97daaff9efbf4797664af55bff96f, type: 3}
   - {fileID: 372069961530702719, guid: f6963ccde816b614aa8a021ab141ea63, type: 3}
   references:
     version: 2
@@ -250,6 +254,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _networkId: 0
   _script: {fileID: -974389366465450183, guid: b6199544e000d4c48b500b228832eb37, type: 3}
+  _properties: []
+  _uiOutput: 0
+  _uiOutputSettings:
+    rid: -2
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+--- !u!114 &253354090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 253354084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e4bc029ffefe7c1d086e252effb1f56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _networkId: 0
+  _script: {fileID: -974389366465450183, guid: c494c0fc4530e7146a59e28755241f83, type: 3}
   _properties: []
   _uiOutput: 0
   _uiOutputSettings:
@@ -471,6 +498,61 @@ Transform:
   - {fileID: 1922044622}
   m_Father: {fileID: 2008864649}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &532008952
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 532008953}
+  - component: {fileID: 532008954}
+  m_Layer: 0
+  m_Name: InventoryUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &532008953
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 532008952}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 253354087}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &532008954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 532008952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6bc0d05ac8487b1736e90ce65204329, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _networkId: 0
+  _script: {fileID: -974389366465450183, guid: 7c630dd0165b8764c9b1901bdfff43fc, type: 3}
+  _properties: []
+  _uiOutput: 3
+  _uiOutputSettings:
+    rid: -2
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
 --- !u!1 &613499642
 GameObject:
   m_ObjectHideFlags: 0

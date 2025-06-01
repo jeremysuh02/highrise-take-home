@@ -18,7 +18,8 @@ MonoBehaviour:
     type: 3}
   _scenePrefab: {fileID: 4155916937004236927, guid: 341ea05b6ce62b941a360bb1f4e3ee00,
     type: 3}
-  _uiFactory: {fileID: 0}
+  _uiFactory: {fileID: -2017830929143987780, guid: 1373b7941fbb3724e946717383867b0d,
+    type: 3}
   _localizationDatabase: {fileID: 0}
   _scenes:
   - Name: Room
