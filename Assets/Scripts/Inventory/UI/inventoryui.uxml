@@ -4,10 +4,10 @@
     xmlns="UnityEngine.UIElements"
     xmlns:hr="Highrise.UI"
     xmlns:editor="UnityEditor.UIElements"
-    xsi:noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd"
+    xsi:noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd"
 >
 
-  <hr:UILuaView class="inventory-u-i">
+  <hr:UILuaView class="inventoryui">
   </hr:UILuaView>
 
 </UXML>

@@ -19,13 +19,15 @@ using UnityEditor;
 
 namespace Highrise.Lua.Generated
 {
-    [AddComponentMenu("Lua/inventoryui")]
-    [LuaRegisterType(0x45f6d49abadfaff5, typeof(LuaBehaviour))]
-    public class inventoryui : LuaBehaviourThunk
+    [AddComponentMenu("Lua/PopupUIModule")]
+    [LuaRegisterType(0x1bec1d57ca2b5c0f, typeof(LuaBehaviour))]
+    public class PopupUIModule : LuaBehaviourThunk
     {
-        private const string s_scriptGUID = "f38531a2326c6d545a578047250f4a20";
+        private const string s_scriptGUID = "671c5d166425d4342b6ad087fe2db653";
         public override string ScriptGUID => s_scriptGUID;
 
+        [SerializeField] public System.Collections.Generic.List<UnityEngine.Texture> m_ItemImages = default;
+        [SerializeField] public UnityEngine.Texture m_PlaceholderImage = default;
 
         protected override SerializedPropertyValue[] SerializeProperties()
         {
@@ -34,11 +36,13 @@ namespace Highrise.Lua.Generated
 
             return new SerializedPropertyValue[]
             {
+                CreateSerializedProperty(_script.GetPropertyAt(0), m_ItemImages),
+                CreateSerializedProperty(_script.GetPropertyAt(1), m_PlaceholderImage),
             };
         }
         
 #if HR_STUDIO
-        [MenuItem("CONTEXT/inventoryui/Edit Script")]
+        [MenuItem("CONTEXT/PopupUIModule/Edit Script")]
         private static void EditScript()
         {
             VisualStudioCodeOpener.OpenPath(AssetDatabase.GUIDToAssetPath(s_scriptGUID));

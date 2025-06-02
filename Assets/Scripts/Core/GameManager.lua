@@ -2,6 +2,9 @@
 SaveManager = require("SaveManager")
 Utils = require("Utils")
 
+--!SerializeField
+local PopupUI: GameObject = nil
+
 type PlayerData = SaveManager.PlayerData
 
 players = {}
@@ -21,5 +24,13 @@ end
 
 function self:ServerAwake()
 
+end
+
+function self:ClientStart()
+    PopupUI:SetActive(false)
+end
+
+function ActivePopup()
+    PopupUI:SetActive(true)
 end
 

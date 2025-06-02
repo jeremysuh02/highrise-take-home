@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4160036138424426780}
   - component: {fileID: 5248432411381249718}
   m_Layer: 0
-  m_Name: CoinPrefab
+  m_Name: Nothing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50,8 +50,8 @@ MonoBehaviour:
   _uiOutput: 0
   _uiOutputSettings:
     rid: -2
-  m_itemType: Coin
-  m_itemImage: {fileID: 2800000, guid: 6674768cf98328d41819ec6deaac898d, type: 3}
+  m_itemType: Nothing
+  m_itemImage: {fileID: 2800000, guid: d78806deaf26f92439499e44897e3837, type: 3}
   references:
     version: 2
     RefIds:

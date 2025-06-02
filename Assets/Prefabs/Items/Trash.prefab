@@ -125,6 +125,7 @@ MonoBehaviour:
   _uiOutputSettings:
     rid: -2
   m_itemType: Trash
+  m_itemImage: {fileID: 2800000, guid: 9c9cdd6fa9833344ca53b0b8f55ca4c3, type: 3}
   references:
     version: 2
     RefIds:

@@ -27,6 +27,7 @@ namespace Highrise.Lua.Generated
         public override string ScriptGUID => s_scriptGUID;
 
         [SerializeField] public System.String m_itemType = "";
+        [SerializeField] public UnityEngine.Texture m_itemImage = default;
 
         protected override SerializedPropertyValue[] SerializeProperties()
         {
@@ -36,6 +37,7 @@ namespace Highrise.Lua.Generated
             return new SerializedPropertyValue[]
             {
                 CreateSerializedProperty(_script.GetPropertyAt(0), m_itemType),
+                CreateSerializedProperty(_script.GetPropertyAt(1), m_itemImage),
             };
         }
         

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UXML
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="UnityEngine.UIElements"
+    xmlns:hr="Highrise.UI"
+    xmlns:editor="UnityEditor.UIElements"
+    xsi:noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd"
+>
+
+  <hr:UILuaView class="popupui">
+    <VisualElement class="container" name= "_overlay">
+      <VisualElement class="header">
+        <Label class="item-name" text="Item" name="_itemName" />
+      </VisualElement>
+      <VisualElement class="body">
+          <VisualElement class="found-item" name="_foundItem">
+            <Image class="found-item-image" name="_foundItemImage" />
+          </VisualElement>
+        </VisualElement>
+    </VisualElement>
+  </hr:UILuaView>
+
+</UXML>

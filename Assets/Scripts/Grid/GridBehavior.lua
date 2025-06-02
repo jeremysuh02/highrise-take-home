@@ -1,6 +1,8 @@
 --!Type(ClientAndServer)
 local GridManager: GridManager = require("GridManager")
 local SaveManager: SaveManager = require("SaveManager")
+local GameManager: GameManager = require("GameManager")
+local PopupModule: PopupUIModule = require("PopupUIModule")
 
 local GridRequest = Event.new("GridRequest")
 local GridResponse = Event.new("GridResponse")
@@ -51,12 +53,24 @@ function self:ServerAwake()
     -- print("Grid with item '" .. CurrentItem .. "' tapped.")
 end
 
+function SetPopupUI(index: number, name: string)
+    PopupModule.SetItemImage(index)
+    PopupModule.SetItemName(name)
+    GameManager.ActivePopup()
+end
+
 function DisplayTappedItem(item: string)
     print("Client sees tapped item: " .. item)
     if item == "Treasure" then
         SaveManager.AddWin(1)
+        SetPopupUI(1, item)
     elseif item == "Coin" then
         SaveManager.CoinTransaction(1)
+        SetPopupUI(2, item)
+    elseif item == "Trash" then
+        SetPopupUI(3, item)
+    elseif item == "Nothing" then
+        SetPopupUI(4, item)
     end
 end
 

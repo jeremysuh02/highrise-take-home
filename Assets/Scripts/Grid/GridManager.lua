@@ -18,6 +18,9 @@ local Trash: GameObject = nil
 local Coins: GameObject = nil
 
 --!SerializeField
+local Nothing: GameObject = nil
+
+--!SerializeField
 local Items: {GameObject} = {}
 
 local GridItems = {}

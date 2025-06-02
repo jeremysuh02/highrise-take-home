@@ -125,6 +125,7 @@ MonoBehaviour:
   _uiOutputSettings:
     rid: -2
   m_itemType: Treasure
+  m_itemImage: {fileID: 2800000, guid: 882efdc33a1b5cd408794d3aed64d1ff, type: 3}
   references:
     version: 2
     RefIds:
