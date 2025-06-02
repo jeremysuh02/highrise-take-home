@@ -7,6 +7,7 @@ export type PlayerData = {
     PlayerId: string,
     WinCount: number,
     CoinCount: number,
+    ShovelLevel: number,
 }
 
 local PlayerDataKey = "PlayerData"
@@ -36,6 +37,7 @@ function CreateNewPlayerData(player: Player): PlayerData
         PlayerId = player.user.id,
         WinCount = 0,
         CoinCount = 0,
+        ShovelLevel = 1,
     }
 end
 
@@ -46,6 +48,9 @@ local function ValidatePlayerData(playerData: PlayerData)
     end
     if not playerData.CoinCount or type(playerData.CoinCount) ~= "number" then
         playerData.CoinCount = 0
+    end
+    if not playerData.ShovelLevel or type(playerData.ShovelLevel) ~= "number" then
+        playerData.ShovelLevel = 1
     end
 end
 
@@ -273,7 +278,3 @@ function self.ClientAwake()
 
    
 end
-
---------------------------------------------------------
--- Currency Functions
---------------------------------------------------------

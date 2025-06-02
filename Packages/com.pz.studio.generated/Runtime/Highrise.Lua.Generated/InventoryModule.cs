@@ -19,13 +19,14 @@ using UnityEditor;
 
 namespace Highrise.Lua.Generated
 {
-    [AddComponentMenu("Lua/InventoryManager")]
-    [LuaRegisterType(0x261b9d78f0ac436, typeof(LuaBehaviour))]
-    public class InventoryManager : LuaBehaviourThunk
+    [AddComponentMenu("Lua/InventoryModule")]
+    [LuaRegisterType(0x720333ff51605d0b, typeof(LuaBehaviour))]
+    public class InventoryModule : LuaBehaviourThunk
     {
-        private const string s_scriptGUID = "788f8ee3f458f3647bc03fc111216fe7";
+        private const string s_scriptGUID = "bae1f9722b7017f48abc80f1f10b6383";
         public override string ScriptGUID => s_scriptGUID;
 
+        [SerializeField] public System.Boolean m_ShovelEquipped = false;
 
         protected override SerializedPropertyValue[] SerializeProperties()
         {
@@ -34,11 +35,12 @@ namespace Highrise.Lua.Generated
 
             return new SerializedPropertyValue[]
             {
+                CreateSerializedProperty(_script.GetPropertyAt(0), m_ShovelEquipped),
             };
         }
         
 #if HR_STUDIO
-        [MenuItem("CONTEXT/InventoryManager/Edit Script")]
+        [MenuItem("CONTEXT/InventoryModule/Edit Script")]
         private static void EditScript()
         {
             VisualStudioCodeOpener.OpenPath(AssetDatabase.GUIDToAssetPath(s_scriptGUID));

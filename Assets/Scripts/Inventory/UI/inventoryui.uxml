@@ -7,7 +7,16 @@
     xsi:noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd"
 >
 
-  <hr:UILuaView class="inventoryui">
+  <hr:UILuaView class="inventoryui" picking-mode="Ignore">
+    <VisualElement class="button-container" >
+      <VisualElement class="hand-button" name="_handButton" picking-mode="Position">
+        <Image class="button-icon" name="_handIcon" />
+      </VisualElement>
+
+      <VisualElement class="shovel-button" name="_shovelButton" picking-mode="Position">
+        <Image class="button-icon" name="_shovelIcon" />
+      </VisualElement>
+    </VisualElement>
   </hr:UILuaView>
 
 </UXML>

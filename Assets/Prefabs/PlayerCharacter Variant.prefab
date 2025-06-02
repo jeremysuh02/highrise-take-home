@@ -13,6 +13,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerCharacter Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 2639008997729735659, guid: 257a642d7e8bdee4fb0dd92a56ff9b1b,
+        type: 3}
+      propertyPath: _outfits.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2639008997729735659, guid: 257a642d7e8bdee4fb0dd92a56ff9b1b,
+        type: 3}
+      propertyPath: _outfits.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: ab703fd8e0b22b0449a384fa7083cfef,
+        type: 2}
     - target: {fileID: 5362299232143284312, guid: 257a642d7e8bdee4fb0dd92a56ff9b1b,
         type: 3}
       propertyPath: m_Enabled

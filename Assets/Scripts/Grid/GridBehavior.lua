@@ -3,10 +3,15 @@ local GridManager: GridManager = require("GridManager")
 local SaveManager: SaveManager = require("SaveManager")
 local GameManager: GameManager = require("GameManager")
 local PopupModule: PopupUIModule = require("PopupUIModule")
+local InventoryModule: InventoryModule = require("InventoryModule")
 
 local GridRequest = Event.new("GridRequest")
 local GridResponse = Event.new("GridResponse")
 local DisableTapEvent = Event.new("DisableTapEvent")
+local EmoteEvent = Event.new("EmoteEvent")
+
+--!SerializeField
+local EmoteIds : {string} = {}
 
 local GridItem: ItemBehavior = nil
 local ObjectReference: GameObject = nil
@@ -17,8 +22,13 @@ local hasBeenTapped = false -- edge case handler: two player could tap a grid at
 function self:ClientAwake()
     local tapHandler = self.gameObject:GetComponent(TapHandler)
     tapHandler.Tapped:Connect(function()
-        GridRequest:FireServer()
-        DisableTapEvent:FireServer()
+        if InventoryModule.IsShovelActive() then
+            Timer.After(3, function()
+                GridRequest:FireServer()
+                DisableTapEvent:FireServer()
+            end)
+            
+        end
     end)
 
     GridResponse:Connect(function(item: string)

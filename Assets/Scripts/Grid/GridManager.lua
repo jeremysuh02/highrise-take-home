@@ -1,5 +1,7 @@
 --!Type(Module)
 
+local InventoryModule: InventoryModule = require("InventoryModule")
+
 local GridManager = {}
 
 local ItemRequest = Event.new("ItemRequest")

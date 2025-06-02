@@ -1,2 +1,55 @@
+:root {
+    --image-shovel:url("project://database/Assets/Scripts/Inventory/Images/shovel.png");
+    --image-hand:url("project://database/Assets/Scripts/Inventory/Images/hand.png");
+}
+
 .inventoryui {
+    width: 100%;
+    height: 100%;
+    justify-content: flex-end;
+    align-items: flex-end;
+    position: absolute;
+    padding: 20px;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.hand-button {
+    width: 64px;
+    height: 64px;
+    border-radius: 5px;
+    margin: 5px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-width: 0;
+}
+
+.hand-button Image {
+    --unity-image: var(--image-hand);
+}
+
+.shovel-button {
+    width: 64px;
+    height: 64px;
+    border-radius: 5px;
+    margin: 5px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-width: 0;
+}
+
+.shovel-button Image {
+    --unity-image: var(--image-shovel)
+}
+
+
+.image-button
+
+.button-icon {
+    width: 100%;
+    height: 100%;
 }
