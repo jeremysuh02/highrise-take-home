@@ -8,7 +8,10 @@ local InventoryModule: InventoryModule = require("InventoryModule")
 local GridRequest = Event.new("GridRequest")
 local GridResponse = Event.new("GridResponse")
 local DisableTapEvent = Event.new("DisableTapEvent")
-local EmoteEvent = Event.new("EmoteEvent")
+local EmoteRequestEvent = Event.new("EmoteRequestEvent")
+local PlayEmoteEvent = Event.new("PlayEmoteEvent")
+local WaitEvent = Event.new("WaitEvent")
+local StartTimerUIEvent = Event.new("StartTimerUIEvent")
 
 --!SerializeField
 local EmoteIds : {string} = {}
@@ -21,17 +24,17 @@ local hasBeenTapped = false -- edge case handler: two player could tap a grid at
 
 function self:ClientAwake()
     local tapHandler = self.gameObject:GetComponent(TapHandler)
+    
     tapHandler.Tapped:Connect(function()
         if InventoryModule.IsShovelActive() then
-            Timer.After(3, function()
-                GridRequest:FireServer()
-                DisableTapEvent:FireServer()
-            end)
+            EmoteRequestEvent:FireServer(EmoteIds[1])
+            WaitEvent:FireServer()
             
         end
     end)
 
     GridResponse:Connect(function(item: string)
+        GameManager.HideTime()
         DisplayTappedItem(item)
     end)
     
@@ -41,23 +44,62 @@ function self:ClientAwake()
             print("Tap disabled by server")
         end
     end)
+
+    PlayEmoteEvent:Connect(function(player, string)
+        if player.character then
+            player.character:PlayEmote(string)
+        end
+    end)
+
+    StartTimerUIEvent:Connect(function(countDown: number)
+        print("Count down" .. countDown)
+        GameManager.StartTime(countDown)
+    end)
+    
 end
 
 function self:ServerAwake()
     GridRequest:Connect(function(player)
-        if hasBeenTapped then 
-            print("Grid already visited.")
-            return
-        end
-        if GridItem then
-            hasBeenTapped = true
-            print(self.gameObject.name .. " tapped by " .. player.name .. " Item Type:" .. GridItem.GetItemType())
-            GridResponse:FireClient(player, GridItem.GetItemType())
-            DisableTapEvent:FireAllClients()
+        
+    end)
+
+    EmoteRequestEvent:Connect(function(player, string)
+        PlayEmoteEvent:FireAllClients(player, string)
+    end)
+
+    WaitEvent:Connect(function(player)
+        local playerId = player.user.id
+        local playerData = SaveManager.ServerGetPlayerData(playerId)
+        if playerData then
+            -- determine how long digging takes based on shovel level
+            local shovelLevel = playerData.ShovelLevel
+            if shovelLevel > 10 then shovelLevel = 10 end
+            local decrease = 0.1 * shovelLevel + math.log(shovelLevel)
+            if shovelLevel == 1 then decrease = 0 end
+            print("timer start")
+            print("Decrease: " .. decrease)
+            local countDown = 3 - decrease
+            if countDown then StartTimerUIEvent:FireClient(player, countDown) end
+            Timer.After(countDown, function()
+                    if hasBeenTapped then 
+                        print("Grid already visited.")
+                        GridResponse:FireClient(player, "Nothing")
+                        return
+                    end
+                    if GridItem then
+                        hasBeenTapped = true
+                        print(self.gameObject.name .. " tapped by " .. player.name .. " Item Type:" .. GridItem.GetItemType())
+                        GridResponse:FireClient(player, GridItem.GetItemType())
+                        DisableTapEvent:FireAllClients()
+                    else
+                        print(self.gameObject.name .. " tapped by " .. player.name .. " but GridItem is nil")
+                    end
+            end)
         else
-            print(self.gameObject.name .. " tapped by " .. player.name .. " but GridItem is nil")
+            print("shovel data null.")
         end
     end)
+    
     -- local item = GridManager:GetCurrentItem()
     -- print("Grid with item '" .. item .. "' tapped.")
     -- print("Grid with item '" .. CurrentItem .. "' tapped.")

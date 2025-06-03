@@ -19,15 +19,13 @@ using UnityEditor;
 
 namespace Highrise.Lua.Generated
 {
-    [AddComponentMenu("Lua/GameManager")]
-    [LuaRegisterType(0x64f367123469100e, typeof(LuaBehaviour))]
-    public class GameManager : LuaBehaviourThunk
+    [AddComponentMenu("Lua/timerui")]
+    [LuaRegisterType(0xc1f14e54d5b1fd54, typeof(LuaBehaviour))]
+    public class timerui : LuaBehaviourThunk
     {
-        private const string s_scriptGUID = "2eafb170e6bb8df4a9b82055a434ec5d";
+        private const string s_scriptGUID = "1f781a1cb6eea3842bdca59f09084c2e";
         public override string ScriptGUID => s_scriptGUID;
 
-        [SerializeField] public UnityEngine.GameObject m_PopupUI = default;
-        [SerializeField] public UnityEngine.GameObject m_TimerUI = default;
 
         protected override SerializedPropertyValue[] SerializeProperties()
         {
@@ -36,13 +34,12 @@ namespace Highrise.Lua.Generated
 
             return new SerializedPropertyValue[]
             {
-                CreateSerializedProperty(_script.GetPropertyAt(0), m_PopupUI),
-                CreateSerializedProperty(_script.GetPropertyAt(1), m_TimerUI),
+                CreateSerializedProperty(_script.GetPropertyAt(0), null),
             };
         }
         
 #if HR_STUDIO
-        [MenuItem("CONTEXT/GameManager/Edit Script")]
+        [MenuItem("CONTEXT/timerui/Edit Script")]
         private static void EditScript()
         {
             VisualStudioCodeOpener.OpenPath(AssetDatabase.GUIDToAssetPath(s_scriptGUID));

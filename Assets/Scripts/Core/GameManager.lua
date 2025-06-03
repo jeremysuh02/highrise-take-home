@@ -5,6 +5,9 @@ Utils = require("Utils")
 --!SerializeField
 local PopupUI: GameObject = nil
 
+--!SerializeField 
+local TimerUI: GameObject = nil
+
 type PlayerData = SaveManager.PlayerData
 
 players = {}
@@ -28,9 +31,20 @@ end
 
 function self:ClientStart()
     PopupUI:SetActive(false)
+    TimerUI:SetActive(false)
 end
 
 function ActivePopup()
     PopupUI:SetActive(true)
+end
+
+function StartTime(countdown: number)
+    TimerUI:SetActive(true)
+    local timerUIScript = TimerUI:GetComponent(timerui)
+    timerUIScript.StartCountdown(countdown)
+end
+
+function HideTime()
+    TimerUI:SetActive(false)
 end
 
