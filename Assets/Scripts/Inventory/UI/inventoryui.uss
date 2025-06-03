@@ -15,7 +15,6 @@
 .button-container {
     display: flex;
     flex-direction: row;
-    gap: 12px;
     justify-content: flex-end;
     align-items: center;
 }
@@ -47,7 +46,6 @@
 }
 
 
-.image-button
 
 .button-icon {
     width: 100%;
