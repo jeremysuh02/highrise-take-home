@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UXML
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="UnityEngine.UIElements"
+    xmlns:hr="Highrise.UI"
+    xmlns:editor="UnityEditor.UIElements"
+    xsi:noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd"
+>
+
+  <hr:UILuaView class="upgradeui">
+    <VisualElement class="container">
+      <VisualElement class="header" picking-mode="Ignore">
+        <Label class="title" text="Upgrade" />
+
+        <VisualElement class="close-button" name="_closeButton">
+          <Image class="close-button-image" />
+        </VisualElement>
+
+      </VisualElement>
+
+      <VisualElement class="body">
+        <VisualElement class="item-container">
+          <Image class="item-image" />
+          <VisualElement class="item-info">
+            <Label class="item-name" text="Shovel"/>
+            <Label class="upgrade-desc" name="_upgradeDesc" text="Speed up digging speed." />
+          </VisualElement>
+
+          <VisualElement class="upgrade-button" name="_upgradeShovel">
+            <Image class="button-image" />
+            <Label class="button-text" text="10"/>
+          </VisualElement>
+        </VisualElement>
+      </VisualElement>
+    </VisualElement>
+  </hr:UILuaView>
+
+</UXML>

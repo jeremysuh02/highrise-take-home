@@ -8,6 +8,7 @@ local InventoryModule: InventoryModule = require("InventoryModule")
 local GridRequest = Event.new("GridRequest")
 local GridResponse = Event.new("GridResponse")
 local DisableTapEvent = Event.new("DisableTapEvent")
+local EnableTapEvent = Event.new("EnableTapEvent")
 local EmoteRequestEvent = Event.new("EmoteRequestEvent")
 local PlayEmoteEvent = Event.new("PlayEmoteEvent")
 local WaitEvent = Event.new("WaitEvent")
@@ -42,6 +43,13 @@ function self:ClientAwake()
         if tapHandler then 
             tapHandler.enabled = false 
             print("Tap disabled by server")
+        end
+    end)
+
+    EnableTapEvent:Connect(function()
+        if tapHandler then
+            tapHandler.enabled = true
+            print("Tap enabled.")
         end
     end)
 
@@ -103,6 +111,11 @@ function self:ServerAwake()
     -- local item = GridManager:GetCurrentItem()
     -- print("Grid with item '" .. item .. "' tapped.")
     -- print("Grid with item '" .. CurrentItem .. "' tapped.")
+end
+
+function ResetTap()
+    hasBeenTapped = false
+    EnableTapEvent:FireAllClients()
 end
 
 function SetPopupUI(index: number, name: string)

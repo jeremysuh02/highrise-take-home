@@ -1,6 +1,9 @@
 --!Type(Module)
 
-Utils = require("Utils")
+local Utils : Utils = require("Utils")
+local WinManager : WinManager = require("WinManager")
+local GameManager : GameManager = require("GameManager")
+local WinManager : WinManager = require("WinManager")
 
 -- PlayerData type hold information about a player
 export type PlayerData = {
@@ -18,6 +21,12 @@ local _serverPlayerSaveList: { [string]: PlayerData } = {}
 -- Client player data
 local _clientPlayerData: PlayerData = nil
 
+--!SerializeField
+local UpgradeModule : UpgradeModule = nil
+
+--!SerializeField
+local Testing : boolean = false
+
 -- Events for loading and saving data
 local LoadDataRequestEvent = Event.new("LoadDataRequestEvent")
 local LoadDataResponseEvent = Event.new("LoadDataResponseEvent")
@@ -25,7 +34,11 @@ local SaveDataRequestEvent = Event.new("SaveDataRequestEvent")
 local SaveDataResponseEvent = Event.new("SaveDataResponseEvent")
 AddWinRequest = Event.new("AddWinRequest")
 CoinTransactionRequest = Event.new("CoinTransactionRequest")
+AddLevelRequest = Event.new("AddLevelRequest")
 SaveDataLoadedEvent = Event.new("SaveDataLoadedEvent")
+ResetPlayerDataRequest = Event.new("ResetPlayerDataRequest")
+
+players = {}
 
 --------------------------------------------------------
 -- Server Functions
@@ -137,31 +150,18 @@ function ServerGetPlayerData(id: string): PlayerData
 	return _serverPlayerSaveList[id] -- Return the player data for the given ID
 end
 
-local function TrackPlayers(game, characterCallback)
-    -- Ensure player data is loaded when they join
-    scene.PlayerJoined:Connect(function(scene, player: Player)
-        LoadDataRequestEvent:Connect(ServerLoadPlayerData)
-
-
-        player.CharacterChanged:Connect(function(player, character)
-            local playerinfo = ServerGetPlayerData(player.user.id)
-            -- Check if the character is instantiated
-            if character == nil then
-                return  -- If no character, exit the function
-            end
-
-            -- Call the provided callback function with player info
-            if characterCallback then
-                characterCallback(playerinfo)
-            end
-        end)
-    end)
-
-    -- Optionally clear the data when they leave
-    game.PlayerDisconnected:Connect(function(player)
-        _serverPlayerSaveList[player.user.id] = nil
-    end)
+-- Set player data on the server
+-- Set player data on the server
+function ServerSetPlayerData(player: Player, key: string, value: any)
+    local playerData = _serverPlayerSaveList[player.user.id]
+    if playerData then
+        playerData[key] = value
+        ValidatePlayerData(playerData)
+        _serverPlayerSaveList[player.user.id] = playerData
+        ServerSavePlayerData(player, playerData, nil, false)
+    end
 end
+
 
 function AddWinServer(player, amount)
     Storage.IncrementPlayerValue(player, "WinCount", amount)
@@ -183,24 +183,60 @@ function CoinTransactionServer(player, amount)
     print("Coins: " .. playerInfo.CoinCount)
 end
 
+function AddLevelServer(player)
+    local playerInfo = ServerGetPlayerData(player.user.id)
+    if playerInfo.CoinCount >= 10 then 
+        Storage.IncrementPlayerValue(player, "ShovelLevel", 1)
+        Storage.IncrementPlayerValue(player, "CoinCount", -10)
+        
+        if playerInfo then
+            print("adding level and taking coins")
+            playerInfo.ShovelLevel = (playerInfo.ShovelLevel or 0) + 1
+            playerInfo.CoinCount = (playerInfo.CoinCount or 0) - 10
+        end
+        ServerSavePlayerData(player, playerInfo, nil, true)
+        print("Coins: " .. playerInfo.CoinCount .. " and Shovel Level: " .. playerInfo.ShovelLevel)
+    end
+end
+
 function AddWin(amount)
     AddWinRequest:FireServer(amount)
+    GameManager.VictoryEvent:FireServer()
 end
 
 function CoinTransaction(amount)
     CoinTransactionRequest:FireServer(amount)
 end
 
+function AddLevel()
+    print("AddLevel to server")
+    AddLevelRequest:FireServer()
+end
+
+function ResetPlayerData(player: Player)
+    local newData = CreateNewPlayerData(player)
+    ValidatePlayerData(newData)
+    _serverPlayerSaveList[player.user.id] = newData
+    ServerSavePlayerData(player, newData, nil, true)
+    print("reset data")
+end
+
+
 -- Initialize server-side events
 function self.ServerAwake()
-    TrackPlayers(server)
+    LoadDataRequestEvent:Connect(ServerLoadPlayerData)
     SaveDataRequestEvent:Connect(OnSaveDataRequest)
+
+    ResetPlayerDataRequest:Connect(function(player)
+        ResetPlayerData(player)
+    end)
 
     AddWinRequest:Connect(function(player, amount)
         if amount > 1 then -- ensures players can only receieve 1 win
             amount = 1
         end
         AddWinServer(player, amount)
+        CoinTransactionServer(player, 5)
     end)
     
     CoinTransactionRequest:Connect(function(player, amount)
@@ -209,6 +245,12 @@ function self.ServerAwake()
         end
         CoinTransactionServer(player, amount)
     end)
+
+    AddLevelRequest:Connect(function(player)
+        print("Adding level to server")
+        AddLevelServer(player)
+    end)
+
 end
 
 
@@ -229,7 +271,21 @@ end
 
 -- Setter for current client player data
 function SetClientPlayerData(playerData: PlayerData)
+    local oldData = _clientPlayerData
     _clientPlayerData = playerData
+
+    if not oldData then return end
+
+    if _clientPlayerData.CoinCount ~= oldData.CoinCount then
+        UpgradeModule.UpdatePlayerCoins() -- only coin changed
+    end
+    if _clientPlayerData.ShovelLevel ~= oldData.ShovelLevel then
+        UpgradeModule.UpdateShovelLevel() -- shovel upgrade
+    end
+
+    if _clientPlayerData.WinCount ~= oldData.WinCount then
+        WinManager.DisplayWins()
+    end
 end
 
 -- Load player data from server
@@ -263,6 +319,24 @@ function ClearPlayerData()
     SavePlayerDataToServer() -- Save the new data to server
 end
 
+-- Get the current player's shovel level
+function GetShovelLevel(): number
+    if _clientPlayerData and _clientPlayerData.ShovelLevel then
+        return _clientPlayerData.ShovelLevel
+    end
+    return 1
+end
+
+function GetPlayerDataValue(key: string, default)
+    if _clientPlayerData and _clientPlayerData[key] ~= nil then
+        print("_clientPlayerData value: " .. _clientPlayerData[key])
+        return _clientPlayerData[key]
+    elseif not _clientPlayerData then
+        print("_clientPlayerData is nil")
+    end
+    return default
+end
+
 -- Initialize client-side events
 function self.ClientAwake()
     LoadDataResponseEvent:Connect(OnDataLoaded)
@@ -273,8 +347,12 @@ function self.ClientAwake()
 
     function OnCharacterInstantiate(playerInfo)
         local player = playerInfo.player
-        
-    end
+        local character = player.character
 
-   
+        playerInfo.CoinCount.Changed:Connect(function(coins, oldVal)
+            UpgradeModule.UpdatePlayerCoins()
+        end)
+    end
+    if Testing then ResetPlayerDataRequest:FireServer() end
+
 end

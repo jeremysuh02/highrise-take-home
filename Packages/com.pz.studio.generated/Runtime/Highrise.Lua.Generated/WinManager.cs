@@ -19,16 +19,15 @@ using UnityEditor;
 
 namespace Highrise.Lua.Generated
 {
-    [AddComponentMenu("Lua/SaveManager")]
-    [LuaRegisterType(0x20b003380bb3b8d7, typeof(LuaBehaviour))]
-    public class SaveManager : LuaBehaviourThunk
+    [AddComponentMenu("Lua/WinManager")]
+    [LuaRegisterType(0x55f25ba3cb3fa298, typeof(LuaBehaviour))]
+    public class WinManager : LuaBehaviourThunk
     {
-        private const string s_scriptGUID = "505c1346f94a49742890b1fa0309c4ea";
+        private const string s_scriptGUID = "08d76d9fcf5dbe045aae2fa2fc4722c1";
         public override string ScriptGUID => s_scriptGUID;
 
-        [LuaScriptPropertyAttribute("f5599dd79f551a744a0a30552edf8f38")]
-        [SerializeField] public UnityEngine.Object m_UpgradeModule = default;
-        [SerializeField] public System.Boolean m_Testing = false;
+        [LuaScriptPropertyAttribute("c6aecc00c66cfb44b83db01d50e3fc53")]
+        [SerializeField] public UnityEngine.Object m_WinsUI = default;
 
         protected override SerializedPropertyValue[] SerializeProperties()
         {
@@ -37,13 +36,12 @@ namespace Highrise.Lua.Generated
 
             return new SerializedPropertyValue[]
             {
-                CreateSerializedProperty(_script.GetPropertyAt(0), m_UpgradeModule),
-                CreateSerializedProperty(_script.GetPropertyAt(1), m_Testing),
+                CreateSerializedProperty(_script.GetPropertyAt(0), m_WinsUI),
             };
         }
         
 #if HR_STUDIO
-        [MenuItem("CONTEXT/SaveManager/Edit Script")]
+        [MenuItem("CONTEXT/WinManager/Edit Script")]
         private static void EditScript()
         {
             VisualStudioCodeOpener.OpenPath(AssetDatabase.GUIDToAssetPath(s_scriptGUID));

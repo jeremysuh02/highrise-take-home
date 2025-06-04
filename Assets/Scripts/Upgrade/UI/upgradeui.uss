@@ -1,0 +1,162 @@
+:root {
+    --image-shovel:url("project://database/Assets/Scripts/Inventory/Images/shovel.png");
+    --image-coin:url("project://database/Assets/Scripts/UI/Popup/Images/coin.png");
+
+}
+
+.upgradeui {
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+
+    background-color: #141317;
+
+    border-radius: 15px;
+
+    min-width: 30px;
+    min-height: 50px;
+
+    max-width: 1000px;
+    max-height: 1200px;
+
+    align-self: center;
+
+    overflow: hidden;
+}
+
+.header {
+    color: white;
+    background-color: rgba(67, 164, 255, 0.5);
+    padding: 5px;
+
+    align-items: center;
+    justify-content: center;
+    -unity-text-align: center;
+
+    font-size: 20px;
+    -unity-font-definition: var(--font-black);
+}
+
+.close-button {
+    position: absolute;
+
+    top: 5px;
+    right: 5px;
+}
+
+.close-button Image {
+    --unity-image: var(--image-icon-close);
+
+    width: 34px;
+    height: 34px;
+}
+
+.body {
+    width: 100%;
+    height: 100%;
+
+    color: white;
+
+    overflow: hidden;
+
+}
+
+.item-container {
+    flex-direction: row;
+    margin: 5px;
+
+    background-color:rgb(46, 46, 50);
+    padding: 5px;
+
+    align-items: center;
+    border-radius: 10px;
+
+    justify-content: space-between;
+}
+
+.item-container Image {
+    --unity-image: var(--image-shovel);
+}
+
+.item-image {
+    width: 60px;
+    height: 60px;
+
+    background-color: rgba(0,0,0,0.5);
+    border-radius: 8px;
+
+    overflow: hidden;
+
+    padding: 3px;
+
+    flex-shrink: 0;
+}
+
+.item-info {
+    margin-right: auto;
+
+    margin-left: 5px;
+
+    height: 100%;
+    width: 100%;
+}
+
+.item-name {
+    flex-grow: 1;
+    -unity-text-align: middle-left;
+
+    font-size: 15px;
+
+    white-space: normal;
+    
+    padding: 0;
+}
+
+.item-desc{
+    font-size: 14px;
+    white-space: normal;
+    flex-grow: 1;
+    padding: 0;
+}
+
+.upgrade-button{
+    background-color: rgba(67, 164, 255, 0.5);
+
+    border-radius: 5px;
+
+    align-items: center;
+    justify-content: center;
+
+    -unity-text-align: middle-center;
+
+    width: 70px;
+    height: 40px;
+
+    flex-shrink: 0;
+
+    font-size: 18px;
+
+    padding: 0px 5px;
+    flex-direction: row;
+
+    border-radius: 10px;
+}
+
+.upgrade-button Image {
+
+    --unity-image: var(--image-coin);
+
+    width: 18px;
+    height: 18px;
+
+    align-self: center;
+
+    overflow: hidden;
+}

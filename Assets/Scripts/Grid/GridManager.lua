@@ -76,6 +76,18 @@ function InitializeGrids()
     end
 end
 
+function ResetAllGrids()
+    GridItems = {}
+    for i, grid in ipairs(Grids) do
+        grid.SetObjectReference(nil)
+        grid.SetCurrentItem(nil)
+        grid.ResetTap()
+        table.insert(GridItems, "Nothing")
+        print("Grid " .. tostring(i) .. " reset to empty.")
+    end
+    InitializeGrids()
+end
+
 function SetGridHelper(number: number, grid: GridBehavior, index: number)
     local getItem = Object.Instantiate(Items[number])
     grid.SetObjectReference(getItem)
