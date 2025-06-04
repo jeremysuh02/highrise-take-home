@@ -1,5 +1,4 @@
 --!Type(ClientAndServer)
-local ItemModule = require("ItemModule")
 
 --!SerializeField
 local itemType: string = ""

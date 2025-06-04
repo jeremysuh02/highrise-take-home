@@ -191,7 +191,6 @@ GameObject:
   - component: {fileID: 253354086}
   - component: {fileID: 253354085}
   - component: {fileID: 253354088}
-  - component: {fileID: 253354089}
   - component: {fileID: 253354090}
   m_Layer: 0
   m_Name: GameManager
@@ -298,29 +297,6 @@ MonoBehaviour:
   - {fileID: 2206118932885688010, guid: 03c97daaff9efbf4797664af55bff96f, type: 3}
   - {fileID: 372069961530702719, guid: f6963ccde816b614aa8a021ab141ea63, type: 3}
   - {fileID: 2206118932885688010, guid: 0a9e23eb62566984d91615c9c0f8c0da, type: 3}
-  references:
-    version: 2
-    RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
---- !u!114 &253354089
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 253354084}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0cc695915adfd411318f0bf732edebe2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _networkId: 0
-  _script: {fileID: -974389366465450183, guid: b6199544e000d4c48b500b228832eb37, type: 3}
-  _properties: []
-  _uiOutput: 0
-  _uiOutputSettings:
-    rid: -2
   references:
     version: 2
     RefIds:
